@@ -4,6 +4,7 @@ import { StyleSheet, Button, TextInput, View, FlatList, ActivityIndicator } from
 //import film from '../Helpers/filmsData'
 import FilmItem from './FilmItem'
 import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi' // import { } from ... car c'est un export nommé dans TMDBApi.js
+import { connect } from 'react-redux'
 
 
 
@@ -51,7 +52,7 @@ class Search extends React.Component {
         this.setState({
             films: [],
         }, () => { // J'utilise la paramètre lenght sur mon tableau de films pour vérifier qu'il y a bien 0 film
-        console.log("Page : " + this.page + " / Totalpages : " + this.totalPages + " / Nombre de films : " + this.state.films.length)
+        //console.log("Page : " + this.page + " / Totalpages : " + this.totalPages + " / Nombre de films : " + this.state.films.length)
         this._loadFilms()
         })
         
@@ -85,8 +86,18 @@ class Search extends React.Component {
                 {/* Ici j'ai simplement repris l'exemple sur la documentation de la FlatList*/}
                 <FlatList
                 data={this.state.films}
+                extraData={this.props.favoritesFilm}
+                //On utilise la prop extraData pour indiquer à notre FlatList que d'autres données doivent être prises en compte si on lui demande de se re-rendre
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({item}) => <FilmItem film={item} displayDetailForFilm={this._displayDetailForFilm}/>}
+                renderItem={({item}) => 
+                <FilmItem 
+                film={item}
+                //ajout d'une props isFilmFavorite pour indiquer à l'item d'afficher le coeur ou non
+                isFilmFavorite={(this.props.favoritesFilm.findIndex(film =>
+                    film.id === item.id) !== -1) ? true : false}
+                displayDetailForFilm={this._displayDetailForFilm}
+                />
+            }
                 onEndReachedThreshold={0.5}
                 onEndReached={() => {
                     if (this.page < this.totalPages){ //On vérifie qu'on n'a pas atteint la fin de la pagination (totalPages) avant de charger plus d'éléments
@@ -124,4 +135,12 @@ const styles = StyleSheet.create( {
     }
 })
 
-export default Search
+
+//on connecte le store Redux, ainsi que les films favoris du state de notre application, à notre component Search
+const mapStateToProps = state => {
+    return {
+        favoritesFilm: state.favoritesFilm
+    }
+}
+
+export default connect(mapStateToProps) (Search)
