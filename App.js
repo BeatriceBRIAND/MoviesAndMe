@@ -1,18 +1,17 @@
 // App.js
  
 import 'react-native-gesture-handler';
- 
 import React from 'react' //React Navigator
- 
 import { NavigationContainer } from '@react-navigation/native';
- 
 import { createStackNavigator } from '@react-navigation/stack';
- 
+import { Provider } from 'react-redux'; 
+
+
 //Components
  
 import Search from './Components/Search'
 import FilmDetail from './Components/FilmDetail'
-
+import Store from './Store/configureStore'
 
 const Stack = createStackNavigator();
  
@@ -25,6 +24,8 @@ render()
 return (
  
 <NavigationContainer>
+
+      <Provider store={Store}>
  
       <Stack.Navigator>
  
@@ -32,6 +33,8 @@ return (
             <Stack.Screen name="Detail" component={FilmDetail} />
  
       </Stack.Navigator>
+      
+      </Provider>
  
 </NavigationContainer> )
  
