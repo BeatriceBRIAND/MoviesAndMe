@@ -1,7 +1,8 @@
 // App.js
  
 import * as React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, Platform, Text, View, Image } from 'react-native';
+import { Icon } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -15,15 +16,21 @@ import Search from './Components/Search'
 import FilmDetail from './Components/FilmDetail'
 import Store from './Store/configureStore'
 import Favorites from './Components/Favorites';
+import Test from './Components/Test';
 
-
+function ActionBarIcon() {
+  return (
+    <Ionicons name={'md-share'} />
+  );
+}
 
 const HomeStack = createStackNavigator();
 function HomeStackScreen() {
  return (
    <HomeStack.Navigator>
     <HomeStack.Screen name="Rechercher" component={Search} />     
-	<HomeStack.Screen name="Detail" component={FilmDetail} />
+	  <HomeStack.Screen name="Detail" component={FilmDetail} options={{
+      headerRight:  props => <ActionBarIcon {...props} /> }} />
    </HomeStack.Navigator>
   );
 }
@@ -34,6 +41,15 @@ function FavoriteStackScreen() {
     <FavoriteStack.Navigator>
       <FavoriteStack.Screen name="Favoris" component={Favorites} />
     </FavoriteStack.Navigator>
+  );
+}
+
+const TestStack = createStackNavigator();
+function TestStackScreen() {
+  return(
+    <TestStack.Navigator>
+      <TestStack.Screen name="Test" component={Test} />
+    </TestStack.Navigator>
   );
 }
 
@@ -55,6 +71,10 @@ export default function App() {
             iconName = focused
             ? 'md-heart'
             : 'md-heart-outline';
+          } else if (route.name === 'Test') {
+            iconName = focused
+            ? 'md-build'
+            : 'md-build-outline';
           }
     
      return <Ionicons name={iconName} size={size} color={color}     />;
@@ -67,6 +87,7 @@ export default function App() {
       showIcon: true // On informe le TabNavigator qu'on souhaite afficher les icônes définis
     }}>
 
+        <Tab.Screen name="Test" component={TestStackScreen} />
         <Tab.Screen name="Rechercher" component={HomeStackScreen} />
         <Tab.Screen name="Favoris" component={FavoriteStackScreen} />
         

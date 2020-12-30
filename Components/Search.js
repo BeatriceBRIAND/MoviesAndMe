@@ -1,7 +1,7 @@
 //Components/Search.js
 
 import React from 'react'
-import { StyleSheet, Button, TextInput, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, Button, TextInput, View, ActivityIndicator, SafeAreaView } from 'react-native'
 //import film from '../Helpers/filmsData'
 import FilmItem from './FilmItem'
 import FilmList from './FilmList'
@@ -77,6 +77,7 @@ class Search extends React.Component {
        // console.log(this.state.isLoading)
         return (
             //Ici on retourne des éléments graphiques de nottre component custom Search
+            <SafeAreaView style={styles.main_container}>
             <View style={styles.main_container}>
                 <TextInput 
                 style={styles.textinput}
@@ -95,6 +96,7 @@ class Search extends React.Component {
                     />                
                 {this._displayLoading()}
             </View>
+            </SafeAreaView>
         )
     }
 }
