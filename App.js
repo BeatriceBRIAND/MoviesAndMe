@@ -28,6 +28,15 @@ function HomeStackScreen() {
   );
 }
 
+const FavoriteStack = createStackNavigator();
+function FavoriteStackScreen() {
+  return(
+    <FavoriteStack.Navigator>
+      <FavoriteStack.Screen name="Favoris" component={Favorites} />
+    </FavoriteStack.Navigator>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -59,7 +68,7 @@ export default function App() {
     }}>
 
         <Tab.Screen name="Rechercher" component={HomeStackScreen} />
-        <Tab.Screen name="Favoris" component={Favorites} />
+        <Tab.Screen name="Favoris" component={FavoriteStackScreen} />
         
       </Tab.Navigator>
 	  </Provider>

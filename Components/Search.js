@@ -16,9 +16,11 @@ class Search extends React.Component {
         this.searchedText = "" // Initialisation de notre donnée searchedText 
         this.page = 0 // Compteur pour connaître la page courante
         this.totalPages = 0 // Nombre de pages totales pour savoir si on a atteint la fin des retours de l'API TMBD
+        this._loadFilms = this._loadFilms.bind(this)
         this.state = { 
             films: [],
         isLoading: false // Par défaut à false car il n'y a pas de chargement tant qu'on ne lance par de recherche
+        
      } 
     }
 
@@ -53,6 +55,11 @@ class Search extends React.Component {
         
     }
 
+    _displayDetailForFilm = (idFilm) => {
+        console.log("Display film with id " + idFilm)
+        this.props.navigation.navigate("Detail", { idFilm: idFilm })
+    }
+
     _displayLoading() {
         if (this.state.isLoading) {
             return (
@@ -84,6 +91,7 @@ class Search extends React.Component {
                     loadFilms={this._loadFilms} // _loadFilm charge les films suivants, ça concerne l'API, le component FilmList va juste appeler cette méthode quand l'utilisateur aura parcouru tous les films et c'est le component Search qui lui fournira les films suivants
                     page={this.page}
                     totalPages={this.totalPages} // les infos page et totalPages vont être utiles, côté component FilmList, pour ne pas déclencher l'évènement pour charger plus de film si on atteint la dernière page
+                    favoriteList={false} // Ici j'ai simplement ajouté un booléen à false pour indiquer qu'on n'est pas dans le cas de l'affichage de la liste des films favoris. Et ainsi pouvoir déclencher le chargement de plus de films lorsque l'utilisateur scrolle.
                     />                
                 {this._displayLoading()}
             </View>
