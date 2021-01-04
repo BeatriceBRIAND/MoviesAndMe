@@ -9,22 +9,6 @@ import { connect } from 'react-redux'
 
 class FilmDetail extends React.Component {
 
-  static navigationOptions = ({ navigation }) => {
-    const { params } = navigation.state
-    // On accède à la fonction shareFilm et au film via les paramètres qu'on a ajouté à la navigation
-    if (params.film != undefined && Platform.OS === 'ios') {
-      return {
-          // On a besoin d'afficher une image, il faut donc passe par une Touchable une fois de plus
-          headerRight: <TouchableOpacity
-                          style={styles.share_touchable_headerrightbutton}
-                          onPress={() => params.shareFilm()}>
-                          <Image
-                            style={styles.share_image}
-                            source={require('../Images/ic_share.png')} />
-                        </TouchableOpacity>
-      }
-    }
-}
   
   constructor(props) {
     super(props)
@@ -115,6 +99,12 @@ class FilmDetail extends React.Component {
       )
     }
   }
+
+  _shareFilm() {
+    const { film } = this.state
+    Share.share({ title: film.title, message: film.overview })
+}
+
 
   render() {
     return (

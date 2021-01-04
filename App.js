@@ -1,7 +1,7 @@
 // App.js
  
 import * as React from 'react';
-import { Button, Platform, Text, View, Image } from 'react-native';
+import {  Share, ShareSheet } from 'react-native';
 import { Icon } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,11 +18,31 @@ import Store from './Store/configureStore'
 import Favorites from './Components/Favorites';
 import Test from './Components/Test';
 
+
+
 function ActionBarIcon() {
-  return (
-    <Ionicons name={'md-share'} />
-  );
-}
+  const onShare = async () => {
+    try {
+      const result = await Share.share({message: 'Ceci est le partage de votre film pour votre destinataire'});
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+    return (
+      <Icon name={'ios-share-outline'} onPress={onShare}/>      
+    );
+  };
+    
+
 
 const HomeStack = createStackNavigator();
 function HomeStackScreen() {
@@ -73,8 +93,8 @@ export default function App() {
             : 'md-heart-outline';
           } else if (route.name === 'Test') {
             iconName = focused
-            ? 'md-build'
-            : 'md-build-outline';
+            ? 'ios-home'
+            : 'ios-home-outline';
           }
     
      return <Ionicons name={iconName} size={size} color={color}     />;
