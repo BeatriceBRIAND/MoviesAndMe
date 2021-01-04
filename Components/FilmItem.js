@@ -4,6 +4,8 @@ import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import { getImageFromApi } from '../API/TMDBApi'
 
+import FadeIn from '../Animations/FadeIn'
+
 class FilmItem extends React.Component {
 
   _displayFavoriteImage(){
@@ -20,6 +22,7 @@ class FilmItem extends React.Component {
     render() {
         const {film} = this.props
         return (
+          <FadeIn>
             <TouchableOpacity
             style={styles.main_container}
             onPress={() => this.props.displayDetailForFilm(film.id)}>
@@ -41,6 +44,7 @@ class FilmItem extends React.Component {
               </View>
             </View>
           </TouchableOpacity>
+          </FadeIn>
         )
     }
 }

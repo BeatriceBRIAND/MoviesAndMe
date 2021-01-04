@@ -23,7 +23,7 @@ import Test from './Components/Test';
 function ActionBarIcon() {
   const onShare = async () => {
     try {
-      const result = await Share.share({message: 'Ceci est le partage de votre film pour votre destinataire'});
+      const result = await Share.share({message: 'Ceci est le partage de votre film préféré'});
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
           // shared with activity type of result.activityType
