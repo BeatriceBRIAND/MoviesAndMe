@@ -20,6 +20,7 @@ import Test from './Components/Test';
 import { render } from 'react-dom';
 import persistStore from 'redux-persist/es/persistStore';
 import { PersistGate } from 'redux-persist/integration/react';
+import News from './Components/News';
 
 
 
@@ -76,6 +77,17 @@ function TestStackScreen() {
   );
 }
 
+const NewsStack = createStackNavigator();
+function NewsStackScreen() {
+  return(
+    <NewsStack.Navigator>
+      <NewsStack.Screen name="Les Derniers Films" component={News} />
+      <NewsStack.Screen name="Detail" component={FilmDetail} options={{
+      headerRight:  props => <ActionBarIcon {...props} /> }} />
+    </NewsStack.Navigator>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
 export default class App extends React.Component {
@@ -101,6 +113,10 @@ export default class App extends React.Component {
             iconName = focused
             ? 'ios-camera'
             : 'ios-camera-outline';
+          } else if (route.name === 'Les Derniers Films') {
+            iconName = focused
+            ? 'ios-notifications'
+            : 'ios-notifications-outline';
           }
     
      return <Ionicons name={iconName} size={size} color={color}     />;
@@ -116,6 +132,7 @@ export default class App extends React.Component {
         <Tab.Screen name="Test" component={TestStackScreen} />
         <Tab.Screen name="Rechercher" component={HomeStackScreen} />
         <Tab.Screen name="Favoris" component={FavoriteStackScreen} />
+        <Tab.Screen name="Les Derniers Films" component={NewsStackScreen} />
         
       </Tab.Navigator>
       </PersistGate>
