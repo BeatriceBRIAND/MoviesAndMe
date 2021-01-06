@@ -93,8 +93,8 @@ export default function App() {
             : 'md-heart-outline';
           } else if (route.name === 'Test') {
             iconName = focused
-            ? 'ios-home'
-            : 'ios-home-outline';
+            ? 'ios-camera'
+            : 'ios-camera-outline';
           }
     
      return <Ionicons name={iconName} size={size} color={color}     />;
