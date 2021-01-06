@@ -2,6 +2,7 @@
 
 import { View } from 'native-base';
 import React from 'react'
+import {connect} from 'react-redux'
 import { StyleSheet, Image, TouchableOpacity } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions'
@@ -11,12 +12,10 @@ class Avatar extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      avatar: require('../Images/ic_tag_faces.png'),
-      hasCameraPermission: null,
-    }
-    // this.setState est appelé dans un callback dans showImagePicker, pensez donc bien à binder la fonction _avatarClicked
     this._avatarClicked = this._avatarClicked.bind(this)
+    this.state = {
+      hasCameraPermission: null,
+    }    
   }
 
   async componentDidMount() {
@@ -32,6 +31,28 @@ class Avatar extends React.Component {
     if (!result.cancelled) {
      this.setState({ avatar: this.state});
     }
+
+    const options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    };
+   
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        console.log('L\'utilisateur a annulé')
+      }
+      else if (response.error) {
+        console.log('Erreur : ', response.error)
+      }
+      else {
+        console.log('Photo : ', response.uri )
+        let requireSource = { uri: response.uri }
+        const action = {type: "SET_AVATAR", value: requireSource}
+        this.props.dispatch(action)
+      }
+    })
    }
   
 
@@ -49,7 +70,7 @@ class Avatar extends React.Component {
       <TouchableOpacity
         style={styles.touchableOpacity}
         onPress={this._avatarClicked}>
-          <Image style={styles.avatar} source={this.state.avatar} />
+          <Image style={styles.avatar} source={this.props.avatar} />
       </TouchableOpacity>
       </View>
     )
@@ -74,4 +95,11 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Avatar
+
+const mapStateToProps = state => {
+  return {
+    avatar: state.setAvatar.avatar
+  }
+}
+
+export default connect(mapStateToProps) (Avatar)

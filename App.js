@@ -17,6 +17,9 @@ import FilmDetail from './Components/FilmDetail'
 import Store from './Store/configureStore'
 import Favorites from './Components/Favorites';
 import Test from './Components/Test';
+import { render } from 'react-dom';
+import persistStore from 'redux-persist/es/persistStore';
+import { PersistGate } from 'redux-persist/integration/react';
 
 
 
@@ -75,10 +78,13 @@ function TestStackScreen() {
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+export default class App extends React.Component {
+  render() {
+    let persistor = persistStore(Store)
   return (
     <NavigationContainer>
 	<Provider store={Store}>
+    <PersistGate loading={null} persistor={persistor}>
       <Tab.Navigator
        screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -112,9 +118,11 @@ export default function App() {
         <Tab.Screen name="Favoris" component={FavoriteStackScreen} />
         
       </Tab.Navigator>
+      </PersistGate>
 	  </Provider>
     </NavigationContainer>
   );
+}
 }
 
 
